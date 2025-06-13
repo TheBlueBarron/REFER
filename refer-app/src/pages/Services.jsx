@@ -8,7 +8,7 @@ export default function Services() {
 
   const fetchServices = async () => {
     try {
-      const res = await axios.get("http://localhost:3000/api/services/mine");
+      const res = await axios.get("/services/mine");
       setServices(res.data);
     } catch (err) {
       console.error("Failed to fetch services", err);
@@ -18,7 +18,7 @@ export default function Services() {
   const handleCreate = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("http://localhost:3000/api/services", {
+      await axios.post("/services", {
         title,
         reward,
       });
