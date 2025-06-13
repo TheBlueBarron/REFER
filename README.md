@@ -45,7 +45,7 @@ This repository contains a simple referral tracking application with a React fro
    cd refer-app
    npm install
    ```
-2. The frontend uses `src/api/axiosClient.js` to contact the backend. Update the `baseURL` there if your backend runs on a different host or port.
+2. The frontend uses `src/api/axiosClient.js` to contact the backend. The base URL is controlled by the `VITE_API_BASE` environment variable. Create a `.env` file (or edit `.env.example`) if your backend runs on a different host or port.
 3. Run the development server:
    ```bash
    npm run dev

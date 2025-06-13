@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useAuth } from "../context/AuthContext";
-import axios from "axios";
+import axios from "../api/axiosClient";
 
 export default function Register() {
   const { login } = useAuth();
@@ -11,7 +11,7 @@ export default function Register() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("http://localhost:3000/api/auth/register", {
+      const res = await axios.post("/auth/register", {
         name,
         email,
         password,
