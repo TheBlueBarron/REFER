@@ -53,3 +53,55 @@ This repository contains a simple referral tracking application with a React fro
    This starts Vite on `http://localhost:5173`.
 
 Both servers must be running for the application to work. You can then open the frontend URL in your browser and sign up or log in.
+
+## Production Deployment Example (lowleads.com)
+
+Follow these additional steps when deploying the project to a real domain such as `https://lowleads.com`.
+
+1. **Configure the backend environment**
+   Create `refer-backend/.env` with production values:
+   ```env
+   PORT=3000
+   JWT_SECRET=your_jwt_secret
+   DATABASE_URL=postgres://user:pass@host:port/dbname
+   NODE_ENV=production
+   FRONTEND_URL=https://lowleads.com
+   ```
+   Start the backend server with your preferred process manager (`pm2`, `systemd`, etc.).
+
+2. **Build the frontend**
+   In `refer-app`, create an `.env` file based on `.env.example`:
+   ```env
+   VITE_API_BASE=https://lowleads.com/api
+   ```
+   Then build the static files:
+   ```bash
+   cd refer-app
+   npm install
+   npm run build
+   ```
+   The compiled site will be available under `refer-app/dist`.
+
+3. **Serve the site**
+   Serve the contents of `refer-app/dist` via your web server and proxy `/api` requests to the Node backend.
+   Below is a simplified Nginx snippet:
+   ```nginx
+   server {
+     server_name lowleads.com;
+     root /path/to/refer-app/dist;
+
+     location /api/ {
+       proxy_pass http://localhost:3000/api/;
+       proxy_http_version 1.1;
+       proxy_set_header Upgrade $http_upgrade;
+       proxy_set_header Connection 'upgrade';
+       proxy_set_header Host $host;
+       proxy_cache_bypass $http_upgrade;
+     }
+
+     location / {
+       try_files $uri /index.html;
+     }
+   }
+   ```
+   Adjust paths and proxy settings as needed for your environment.
