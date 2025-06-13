@@ -9,7 +9,7 @@ const friendRoutes = require("./routes/friendRoutes");
 const leadRoutes = require("./routes/leadRoutes");
 
 dotenv.config();
-console.log("Loaded DATABASE_URL:", process.env.DATABASE_URL);
+console.log("Database configuration loaded");
 
 const app = express();
 
