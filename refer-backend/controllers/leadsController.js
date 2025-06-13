@@ -56,6 +56,30 @@ async function getMyLeads(req, res) {
     res.status(500).json({ error: "Failed to load leads" });
   }
 }
+
+// Get leads submitted to services owned by the current user
+async function getIncomingLeads(req, res) {
+  const ownerId = req.user.id;
+
+  try {
+    const result = await pool.query(
+      `SELECT leads.id, leads.note, leads.status, leads.created_at,
+              services.title AS service_title,
+              users.name AS sender_name
+       FROM leads
+       JOIN services ON services.id = leads.service_id
+       JOIN users ON users.id = leads.sender_id
+       WHERE services.user_id = $1
+       ORDER BY leads.created_at DESC`,
+      [ownerId]
+    );
+
+    res.json(result.rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Failed to load incoming leads" });
+  }
+}
 async function updateLeadStatus(req, res) {
   const userId = req.user.id;
   const leadId = req.params.id;
@@ -81,5 +105,6 @@ async function updateLeadStatus(req, res) {
 module.exports = {
   createLead,
   getMyLeads,
+  getIncomingLeads,
   updateLeadStatus,
 };
