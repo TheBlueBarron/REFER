@@ -20,6 +20,8 @@ npm install
 ```
 
 Tailwind CSS is configured through `tailwind.config.js` and `postcss.config.js`.
+If you upgrade to Tailwind CSS v4 or later, install the `@tailwindcss/postcss`
+package and include it in `postcss.config.js`.
 
 ## Development
 
